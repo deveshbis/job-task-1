@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import useAuth from '../../Hooks/useAuth';
 
 const Navbar = () => {
-    const {user} = useAuth();
+    const { user, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleToggleMenu = () => {

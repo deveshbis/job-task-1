@@ -3,6 +3,7 @@ import {
   } from "react-router-dom";
 import Root from "../Root/Root";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
+import Login from "../components/Login/Login";
 
 
 
@@ -11,6 +12,12 @@ import ErrorPage from "../components/ErrorPage/ErrorPage";
       path: "/",
       element: <Root></Root>,
       errorElement: <ErrorPage></ErrorPage>,
+      children: [
+        {
+            path: "/login",
+            element: <Login></Login>
+        }
+      ]
     },
   ]);
 
