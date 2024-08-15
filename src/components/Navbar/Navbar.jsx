@@ -15,7 +15,7 @@ const Navbar = () => {
                 <div className='flex flex-wrap items-center gap-5 w-full'>
                     <Link to='/'>
                         <h2 className="md:text-3xl text-xl font-bold">
-                            <span className="text-orange-600">Flower </span>Shop
+                            <span className="text-orange-600">Sneakers </span>Shop
                         </h2>
                     </Link>
 

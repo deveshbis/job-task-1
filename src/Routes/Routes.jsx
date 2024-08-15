@@ -5,6 +5,7 @@ import Root from "../Root/Root";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import Login from "../components/Login/Login";
 import Register from "../components/Register/Register";
+import Home from "../components/Home/Home";
 
 
 
@@ -15,12 +16,17 @@ import Register from "../components/Register/Register";
       errorElement: <ErrorPage></ErrorPage>,
       children: [
         {
+            path: "/",
+            element: <Home/>,
+        },
+
+        {
             path: "/login",
-            element: <Login></Login>
+            element: <Login></Login>,
         },
         {
             path: "/register",
-            element: <Register></Register>
+            element: <Register></Register>,
         },
       ]
     },
