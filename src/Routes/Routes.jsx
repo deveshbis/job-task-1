@@ -4,6 +4,7 @@ import {
 import Root from "../Root/Root";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
 import Login from "../components/Login/Login";
+import Register from "../components/Register/Register";
 
 
 
@@ -16,7 +17,11 @@ import Login from "../components/Login/Login";
         {
             path: "/login",
             element: <Login></Login>
-        }
+        },
+        {
+            path: "/register",
+            element: <Register></Register>
+        },
       ]
     },
   ]);
