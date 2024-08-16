@@ -91,6 +91,8 @@ const Cards = () => {
     const [itemsPerPage, setItemsPerPage] = useState(8)
     const [count, setCount] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
+    const [filter, setFilter] = useState('')
+    const [sort, setSort] = useState('')
 
     // useEffect(() => {
     //     fetch("http://localhost:5000/products")
@@ -101,20 +103,20 @@ const Cards = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/allProducts?page=${currentPage}&size=${itemsPerPage}`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/allProducts?page=${currentPage}&size=${itemsPerPage}&filter=${filter}&sort=${sort}`)
             setCard(data)
             // setCount(data.length)
         }
         getData()
-    }, [currentPage, itemsPerPage])
+    }, [currentPage, filter, itemsPerPage, sort])
 
     useEffect(() => {
         const getCount = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/productCount`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/productCount?filter=${filter}`)
             setCount(data.count)
         }
         getCount()
-    }, [])
+    }, [filter])
     console.log(count);
 
     const numberOfPages = Math.ceil(count / itemsPerPage)
@@ -123,13 +125,113 @@ const Cards = () => {
     const handlePaginationButton = value => {
         console.log(value)
         setCurrentPage(value)
-      }
+    }
 
     return (
         <div>
+
             <div className="font-[sans-serif] py-4 mx-auto lg:max-w-7xl sm:max-w-full">
-                <h2 className="text-4xl font-extrabold text-gray-800 mb-12">Premium Sneakers</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className='flex flex-col md:flex-row justify-center items-center gap-5 '>
+                    <div>
+                        <select
+                            onChange={e => {
+                                setFilter(e.target.value)
+                                // setCurrentPage(1)
+                            }}
+                            value={filter}
+                            name='brandName'
+                            id='brandName'
+                            className='border p-4 rounded-lg'
+                        >
+                            <option value=''>Filter by Brand Name</option>
+                            <option value='Adidas'>Adidas</option>
+                            <option value='Puma'>Puma</option>
+                            <option value='Nike'>Nike</option>
+                            <option value='Converse'>Converse</option>
+                            <option value='Reebok'>Reebok</option>
+                            <option value='New Balance'>New Balance</option>
+                            <option value='Vans'>Vans</option>
+                            <option value='Timberland'>Timberland</option>
+                            <option value='Skechers'>Skechers</option>
+                            <option value='Martens'>Dr. Martens</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select
+                            onChange={e => {
+                                setFilter(e.target.value)
+                                setCurrentPage(1)
+                            }}
+                            value={filter}
+                            name='category'
+                            id='category'
+                            className='border p-4 rounded-lg'
+                        >
+                            <option value=''>Filter by Category Name</option>
+                            <option value='Running'>Running</option>
+                            <option value='High Tops'>High Tops</option>
+                            <option value='Casual'>Casual</option>
+                            <option value='Skate'>Skate</option>
+                            <option value='Lifestyle'>Lifestyle</option>
+                            <option value='High Fashion'>High Fashion</option>
+                            <option value='Collaborations'>Collaborations</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select
+                            onChange={e => {
+                                setFilter(e.target.value)
+                                // setCurrentPage(1)
+                            }}
+                            value={filter}
+                            name='priceRange'
+                            id='priceRange'
+                            className='border p-4 rounded-lg'
+                        >
+                            <option value=''>Filter by Price Range</option>
+                            <option value='Web Development'>Brand Name</option>
+                            <option value='Graphics Design'>Graphics Design</option>
+                            <option value='Digital Marketing'>Digital Marketing</option>
+                        </select>
+                    </div>
+
+                    <form >
+                        {/* <form onSubmit={handleSearch}> */}
+                        <div className='flex p-1 overflow-hidden border rounded-lg    focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300'>
+                            <input
+                                className='px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none focus:placeholder-transparent'
+                                type='text'
+                                // onChange={e => setSearchText(e.target.value)}
+                                // value={searchText}
+                                name='search'
+                                placeholder='Enter Product Name'
+                                aria-label='Enter Product Name'
+                            />
+
+                            <button className='px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:bg-gray-600 focus:outline-none'>
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                    <div>
+                        <select
+                            onChange={e => {
+                                setSort(e.target.value)
+                                setCurrentPage(1)
+                            }}
+                            value={sort}
+                            name='sort'
+                            id='sort'
+                            className='border p-4 rounded-md'
+                        >
+                            <option value=''>Sort By Price Range</option>
+                            <option value='dsc'>Price: High to High</option>
+                            <option value='asc'>Price: Low to Low</option>
+                            {/* <option value='Newest first'>Date Added: Newest first</option> */}
+                        </select>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
 
                     {
                         card.map(aCard => <div key={aCard.ProductId}
@@ -146,7 +248,7 @@ const Cards = () => {
 
                             <div className="p-6 bg-white">
                                 <h3 className="text-lg font-bold text-gray-800">{aCard.ProductName}</h3>
-                                <h4 className="text-lg text-gray-800 font-bold mt-2">{aCard.Price}</h4>
+                                <h4 className="text-lg text-gray-800 font-bold mt-2">${aCard.Price}</h4>
                                 <h3 className="text-lg text-gray-800 font-bold ">Category: {aCard.Category}</h3>
                                 <p className="text-gray-600 text-sm mt-2">{aCard.Description}</p>
 
@@ -181,12 +283,13 @@ const Cards = () => {
                 </div>
             </div>
 
+
             <div className='flex justify-center mt-12 mb-3'>
                 {/* Previous Button */}
                 <button
                     disabled={currentPage === 1}
                     onClick={() => handlePaginationButton(currentPage - 1)}
-                    className='px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-blue-500  hover:text-white'
+                    className='px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-orange-600 hover:text-white'
                 >
                     <div className='flex items-center -mx-1'>
                         <svg
@@ -212,9 +315,9 @@ const Cards = () => {
                     <button
                         onClick={() => handlePaginationButton(btnNum)}
                         key={btnNum}
-                        className={`hidden ${currentPage === btnNum ? 'bg-blue-500 text-white' : ''
-                            } px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-blue-500  hover:text-white`}
-                        
+                        className={`hidden ${currentPage === btnNum ? 'bg-orange-600 text-white' : ''
+                            } px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md sm:inline hover:bg-orange-600 hover:text-white`}
+
                     >
                         {btnNum}
                     </button>
@@ -223,7 +326,7 @@ const Cards = () => {
                 <button
                     disabled={currentPage === numberOfPages}
                     onClick={() => handlePaginationButton(currentPage + 1)}
-                    className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'
+                    className='px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-orange-600 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500'
                 >
                     <div className='flex items-center -mx-1'>
                         <span className='mx-1'>Next</span>

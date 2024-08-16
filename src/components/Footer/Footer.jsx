@@ -7,10 +7,10 @@ const Footer = () => {
                 <aside>
 
                     <h2 className="text-3xl font-bold">
-                        <span className="text-orange-600">Flower </span>Shop
+                        <span className="text-orange-600">Sneakers </span>Shop
                     </h2>
                     <p className="mt-4 max-w-xs">
-                        Flower Shop offers exquisite blooms for every occasion, from elegant bouquets to vibrant arrangements. Our flowers are meticulously curated to bring beauty and joy to your life.
+                    Sneakers Shop offers exquisite blooms for every occasion, from elegant bouquets to vibrant arrangements. Our Sneakers are meticulously curated to bring beauty and joy to your life.
                     </p>
 
                 </aside>
