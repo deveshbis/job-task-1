@@ -93,6 +93,8 @@ const Cards = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [filter, setFilter] = useState('')
     const [sort, setSort] = useState('')
+    const [search, setSearch] = useState('')
+    const [searchText, setSearchText] = useState('')
 
     // useEffect(() => {
     //     fetch("http://localhost:5000/products")
@@ -103,20 +105,20 @@ const Cards = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/allProducts?page=${currentPage}&size=${itemsPerPage}&filter=${filter}&sort=${sort}`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/allProducts?page=${currentPage}&size=${itemsPerPage}&filter=${filter}&sort=${sort}&search=${search}`)
             setCard(data)
             // setCount(data.length)
         }
         getData()
-    }, [currentPage, filter, itemsPerPage, sort])
+    }, [currentPage, filter, itemsPerPage, sort, search])
 
     useEffect(() => {
         const getCount = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/productCount?filter=${filter}`)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/productCount?filter=${filter}&search=${search}`)
             setCount(data.count)
         }
         getCount()
-    }, [filter])
+    }, [filter, search])
     console.log(count);
 
     const numberOfPages = Math.ceil(count / itemsPerPage)
@@ -126,6 +128,13 @@ const Cards = () => {
         console.log(value)
         setCurrentPage(value)
     }
+
+    const handleSearch = e => {
+        e.preventDefault()
+        setSearch(searchText)
+        setSearchText('');
+    }
+
 
     return (
         <div>
@@ -195,14 +204,14 @@ const Cards = () => {
                         </select>
                     </div>
 
-                    <form >
-                        {/* <form onSubmit={handleSearch}> */}
+
+                    <form onSubmit={handleSearch}>
                         <div className='flex p-1 overflow-hidden border rounded-lg    focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300'>
                             <input
                                 className='px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none focus:placeholder-transparent'
                                 type='text'
-                                // onChange={e => setSearchText(e.target.value)}
-                                // value={searchText}
+                                onChange={e => setSearchText(e.target.value)}
+                                value={searchText}
                                 name='search'
                                 placeholder='Enter Product Name'
                                 aria-label='Enter Product Name'
