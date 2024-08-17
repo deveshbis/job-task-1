@@ -2,13 +2,15 @@ import React from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer/Footer';
+import useAuth from '../Hooks/useAuth';
 
 const Root = () => {
+    const { user } = useAuth()
     return (
         <div>
-            <Navbar></Navbar>
+            {user && <Navbar></Navbar>}
             <Outlet></Outlet>
-            <Footer></Footer>
+            {user && <Footer></Footer>}
         </div>
     );
 };

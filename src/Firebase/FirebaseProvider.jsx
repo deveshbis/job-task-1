@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import auth from "./firebase.config";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 
 
 export const AuthContext = createContext(null)
@@ -11,22 +11,33 @@ const FirebaseProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
 
-
+    const [loading, setLoading] = useState(true);
 
     //create user
     const createUser = (email, password) => {
         // createUserWithEmailAndPassword(auth, email, password)
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password)
+    }
+
+    // update user profile
+    const updateUserProfile = (name, image) => {
+        return updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: image
+        })
     }
 
     //sign in user
     const signInUser = (email, password) => {
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password)
     }
 
 
     //google login
     const googleLogin = () => {
+        setLoading(true);
         return signInWithPopup(auth, googleProvider)
     }
 
@@ -38,19 +49,32 @@ const FirebaseProvider = ({ children }) => {
 
     //observer user
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUser(user)
-            }
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            setUser(user);
+            setLoading(false);
+          }
         });
-    }, [])
+        return () => unsubscribe();
+      }, []);
+
+    // useEffect(() => {
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+    //             setUser(user)
+    //             setLoading(false);
+    //         }
+    //     });
+    // }, [])
 
     const allValue = {
         createUser,
         signInUser,
         googleLogin,
         logout,
-        user
+        user,
+        updateUserProfile,
+        loading
     }
     return (
         <AuthContext.Provider value={allValue}>

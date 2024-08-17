@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Register = () => {
 
-    const { createUser } = useAuth();
+    const { createUser, updateUserProfile } = useAuth();
+
+    const navigate = useNavigate();
+    const from = "/";
 
     const {
         register,
@@ -14,28 +17,34 @@ const Register = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        const { email, password } = data;
-        createUser(email, password)
-            .then(result => {
-                console.log(result);
+        const { email, password, image, fullName } = data;
 
-            })
-    }
+        //create user and update profile
+        createUser(email, password)
+            .then(() => {
+                updateUserProfile(fullName, image)
+                    .then(() => {
+                        navigate(from);
+                    });
+            });
+    };
+
+    // const onSubmit = (data) => {
+    //     const { email, password } = data;
+    //     createUser(email, password)
+    //         .then(result => {
+    //             console.log(result);
+
+    //         })
+    // }
+
     return (
         <div>
             <div className="bg-white dark:bg-gray-900">
                 <div className="flex justify-center h-screen">
-                    <div className="hidden bg-cover lg:block lg:w-2/3" style={{ backgroundImage: "url(https://i.ibb.co/9pf2NZw/Sunflower.jpg)" }}>
+                    <div className="hidden bg-cover lg:block lg:w-2/3" style={{ backgroundImage: "url(https://readymadeui.com/images/product10.webp)" }}>
                         <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
-                            <div>
-                                <h2 className="text-2xl font-bold text-white sm:text-3xl">Meraki UI</h2>
 
-                                <p className="max-w-xl mt-3 text-gray-300">
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                                    autem ipsa, nulla laboriosam dolores, repellendus perferendis libero suscipit nam temporibus
-                                    molestiae
-                                </p>
-                            </div>
                         </div>
                     </div>
 

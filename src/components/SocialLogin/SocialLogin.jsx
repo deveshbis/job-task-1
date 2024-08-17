@@ -1,13 +1,28 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 
 
 const SocialLogin = () => {
     const { googleLogin } = useAuth();
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const form = location?.state || '/'
+
+    const handleSocialLogin = socialProvider =>{
+        socialProvider()
+        .then(result =>{
+            if(result.user){
+                navigate(form)
+            }
+            
+        })
+    }
     
     return (
         <div className="flex items-center justify-center">
             <button type="button"
-                onClick={() => googleLogin()}
+                onClick={() => handleSocialLogin(googleLogin)}
                 className="px-5 py-3 inline-flex items-center rounded-lg text-[#333] text-base tracking-wider font-semibold border-none outline-none shadow-lg bg-gray-50 hover:bg-gray-100 active:bg-gray-50">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22px" fill="#fff" className="inline mr-3" viewBox="0 0 512 512">
                     <path fill="#fbbd00"
